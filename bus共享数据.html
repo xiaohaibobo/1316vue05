@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <p>{{msg}}</p>
+        <div is="box"></div>
+    </div>
+</body>
+<script src="./js/vue.js"></script>
+<script>
+    let bus = new Vue();
+    let box = {
+        template: `
+        <div>
+            <input type="text" v-model='cont'>
+            <input type="button" value='通过bus向父组件传值' @click='sendData'>
+        </div>
+        `,
+        data() {
+            return {
+                cont: ''
+            }
+        },
+        methods: {
+            sendData() {
+                bus.$emit('send', this.cont)
+            }
+        },
+    }
+
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            msg: ''
+        },
+        components: { box },
+        created() {
+            bus.$on('send', (val) => {
+                this.msg = val
+            })
+        },
+
+    })
+</script>
+
+</html>

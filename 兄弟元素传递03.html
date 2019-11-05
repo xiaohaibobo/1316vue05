@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div is="box1"></div>
+        <div is="box2"></div>
+    </div>
+</body>
+<script src="./js/vue.js"></script>
+<script>
+    let box1 = {
+        template: `
+        <div>
+            <input type='text' v-model='cont'>
+            <input type='button' value='传值给兄弟' @click='fun1'>
+        </div>
+        `,
+        data() {
+            return {
+                cont: ''
+            }
+        },
+        methods: {
+            fun1() {
+                this.$parent.$children[1].getData(this.cont)
+            }
+        },
+    }
+    let box2 = {
+        template: `
+        <div>
+            <p>{{msg}}</p>
+        </div>
+        `,
+        data() {
+            return {
+                msg: ''
+            }
+        },
+        methods: {
+            getData(val) {
+                this.msg = val
+            }
+        },
+    }
+    let vm = new Vue({
+        el: '#app',
+        components: { box1, box2 }
+
+    })
+</script>
+
+</html>
